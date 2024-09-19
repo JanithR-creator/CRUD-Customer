@@ -17,14 +17,15 @@ server.listen(port,()=>{
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
-const bodyParser=require('body-parser');//*
+const bodyParser = require('body-parser');//*
 
 const serverPort = process.env.SERVER_PORT;
 
 const customerRoute = require('./routes/CustomerRoute');
+const userRoute = require('./routes/UserRoute');
 
 const app = express();
-app.use(bodyParser.urlencoded({extended:false}));//*
+app.use(bodyParser.urlencoded({extended: false}));//*
 app.use(bodyParser.json());//*
 
 mongoose.connect('mongodb://localhost:27017/TestApp');
@@ -38,3 +39,4 @@ app.get('/test', (req, res) => {
 })
 
 app.use('/api/v1/customers', customerRoute);
+app.use('/api/v1/users', userRoute);
