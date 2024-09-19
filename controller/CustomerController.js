@@ -57,13 +57,15 @@ const updateById = (req, resp) => {
 }
 const search = (req, resp) => {
     try {
-        const {name, address} = req.query;
+        const searchText = req.query.searchText || '';
         const page = parseInt(req.query.page) || 1;
         const size = parseInt(req.query.size) || 10;
-        const query = {};
-        if (name) query.name = new RegExp(name, 'i');
-        if (address) query.address = new RegExp(address, 'i');
-
+        const query = {
+            $or: [
+                {name: new RegExp(searchText, 'i')},
+                {address: new RegExp(searchText, 'i')}
+            ]
+        };
         CustomerSchema.find(query)
             .skip((page - 1) * size)
             .limit(size)
